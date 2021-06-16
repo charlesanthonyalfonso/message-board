@@ -41,8 +41,6 @@ provider:
 functions:
   MessageBoard: # A Function
     handler: index.handler
-    events: # The Events that trigger this Function
-      - http: post user
 
 # The "Resources" your "Functions" use.  Raw AWS CloudFormation goes in here.
 resources:

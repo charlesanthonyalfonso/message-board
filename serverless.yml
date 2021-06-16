@@ -5,7 +5,7 @@ service: message-board
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   stage: prod # Set the default stage used. Default is dev
   region: us-east-1 # Overwrite the default region used. Default is us-east-1
   stackName: message-board-${sls:stage} # Overwrite default CloudFormation stack name. Default is ${self:service}-${sls:stage}

@@ -1,5 +1,6 @@
 # serverless.yml
 
+app: message-board
 service: message-board
 
 provider:

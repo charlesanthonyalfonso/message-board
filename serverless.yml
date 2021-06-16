@@ -1,6 +1,6 @@
 org: charlesanthonyalfonso
-app: my-aws-node-express-dynamodb-api-app
-service: my-aws-node-express-dynamodb-api-app
+app: message-board
+service: message-board
 
 frameworkVersion: '2'
 

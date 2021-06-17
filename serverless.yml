@@ -53,6 +53,15 @@ functions:
       - http:
           path: /boards/{proxy+}
           method: ANY
+  messages:
+    handler: messages.handler
+    events:
+      - http:
+          path: /messages
+          method: ANY
+      - http:
+          path: /messages/{proxy+}
+          method: ANY
 
 resources:
   Resources:

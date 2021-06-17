@@ -21,8 +21,8 @@ app.get("/users", async function (req, res) {
   try {
     const { Item } = await dynamoDbClient.get(params).promise();
     if (Item) {
-      const { userId, name } = Item;
-      res.json({ userId, name });
+      const { userId, name, email } = Item;
+      res.json({ userId, name, email });
     } else {
       res
         .status(404)
@@ -57,11 +57,13 @@ app.get("/users/list", async function (req, res) {
 
 app.post("/users", async function (req, res) {
   console.log('REQUEST', req)
-  const { userId, name } = req.body;
+  const { userId, name, email } = req.body;
   if (typeof userId !== "string") {
     res.status(400).json({ error: '"userId" must be a string' });
   } else if (typeof name !== "string") {
     res.status(400).json({ error: '"name" must be a string' });
+  } else if (typeof email !== "string") {
+    res.status(400).json({ error: '"email" must be a string' });
   }
 
   const params = {
@@ -69,12 +71,13 @@ app.post("/users", async function (req, res) {
     Item: {
       userId: userId,
       name: name,
+      email: email,
     },
   };
 
   try {
     await dynamoDbClient.put(params).promise();
-    res.json({ userId, name });
+    res.json({ userId, name, email });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Could not create user" });

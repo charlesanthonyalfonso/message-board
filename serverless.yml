@@ -5,7 +5,8 @@ service: message-board
 frameworkVersion: '2'
 
 custom:
-  tableName: 'users-table-${self:provider.stage}'
+  userTableName: 'users-table-${self:provider.stage}'
+  boardTableName: 'boards-table-${self:provider.stage}'
 
 provider:
   name: aws
@@ -24,13 +25,23 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource:
-            - Fn::GetAtt: [ UsersTable, Arn ]
+            - Fn::GetAtt: [ UsersTable, BoardsTable, Arn ]
   environment:
-    USERS_TABLE: ${self:custom.tableName}
+    USERS_TABLE: ${self:custom.userTableName}
+    BOARDS_TABLE: ${self:custom.boardTableName}
 
 functions:
-  api:
-    handler: handler.handler
+  users:
+    handler: users.handler
+    events:
+      - http:
+          path: /
+          method: ANY
+      - http:
+          path: /{proxy+}
+          method: ANY
+  boards:
+    handler: boards.handler
     events:
       - http:
           path: /
@@ -53,4 +64,17 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: ${self:custom.tableName}
+        TableName: ${self:custom.userTableName}
+    BoardsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: boardId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.boardTableName}

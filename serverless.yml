@@ -7,6 +7,7 @@ frameworkVersion: '2'
 custom:
   userTableName: 'users-table-${self:provider.stage}'
   boardTableName: 'boards-table-${self:provider.stage}'
+  messageTableName: 'message-table-${self:provider.stage}'
 
 provider:
   name: aws
@@ -27,9 +28,11 @@ provider:
           Resource:
             - Fn::GetAtt: [ UsersTable, Arn ]
             - Fn::GetAtt: [ BoardsTable, Arn ]
+            - Fn::GetAtt: [ MessagesTable, Arn ]
   environment:
     USERS_TABLE: ${self:custom.userTableName}
     BOARDS_TABLE: ${self:custom.boardTableName}
+    MESSAGES_TABLE: ${self:custom.messageTableName}
 
 functions:
   users:
@@ -79,3 +82,16 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:custom.boardTableName}
+    MessagesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: messageId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: messageId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.messageTableName}

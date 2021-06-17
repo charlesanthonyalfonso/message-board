@@ -41,7 +41,7 @@ app.get("/users/list", async function (req, res) {
   };
 
   try {
-    const { Items } = await dynamoDbClient.get(params).promise();
+    const { Items } = await dynamoDbClient.scan(params).promise();
     if (Items) {
       res.json(Items);
     } else {

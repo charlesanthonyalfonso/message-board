@@ -10,6 +10,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs12.x
+  region: us-east-2
   lambdaHashingVersion: '20201221'
   stage: dev
   iam:
@@ -29,15 +30,12 @@ provider:
     USERS_TABLE: ${self:custom.tableName}
 
 functions:
-  api:
-    handler: handler.handler
+  createUser:
+    handler: user.create
     events:
       - http:
-          path: /
-          method: ANY
-      - http:
-          path: /{proxy+}
-          method: ANY
+          path: /user/create
+          method: POST
 
 resources:
   Resources:

@@ -25,7 +25,8 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource:
-            - Fn::GetAtt: [ UsersTable, BoardsTable, Arn ]
+            - Fn::GetAtt: [ UsersTable, Arn ]
+            - Fn::GetAtt: [ BoardsTable, Arn ]
   environment:
     USERS_TABLE: ${self:custom.userTableName}
     BOARDS_TABLE: ${self:custom.boardTableName}
@@ -35,19 +36,19 @@ functions:
     handler: users.handler
     events:
       - http:
-          path: /
+          path: /users
           method: ANY
       - http:
-          path: /{proxy+}
+          path: /users/{proxy+}
           method: ANY
   boards:
     handler: boards.handler
     events:
       - http:
-          path: /
+          path: /boards
           method: ANY
       - http:
-          path: /{proxy+}
+          path: /boards/{proxy+}
           method: ANY
 
 resources:
@@ -72,7 +73,7 @@ resources:
           - AttributeName: boardId
             AttributeType: S
         KeySchema:
-          - AttributeName: userId
+          - AttributeName: boardId
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1

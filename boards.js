@@ -47,7 +47,7 @@ app.post("/boards", async function (req, res) {
 
     try {
         await dynamoDbClient.put(params).promise();
-        res.json({ userId, name });
+        res.json({ boardId, name });
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Could not create user" });

@@ -35,6 +35,7 @@ app.get("/users", async function (req, res) {
 });
 
 app.get("/users/list", async function (req, res) {
+  console.log('REQUEST', req)
   const params = {
     TableName: USERS_TABLE
   };
@@ -55,8 +56,8 @@ app.get("/users/list", async function (req, res) {
 });
 
 app.post("/users", async function (req, res) {
+  console.log('REQUEST', req)
   const { userId, name } = req.body;
-  console.log('REQUEST_BODY', req);
   if (typeof userId !== "string") {
     res.status(400).json({ error: '"userId" must be a string' });
   } else if (typeof name !== "string") {

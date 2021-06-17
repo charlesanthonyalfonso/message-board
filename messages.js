@@ -54,6 +54,7 @@ app.post("/messages", async function (req, res) {
             boardId: boardId,
             userId: userId,
             message: message,
+            createdAt: (new Date()).toISOString(),
         },
     };
 

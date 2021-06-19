@@ -4,6 +4,9 @@ service: message-board
 
 frameworkVersion: '2'
 
+plugins:
+  - serverless-plugin-typescript
+
 custom:
   userTableName: 'users-table-${self:provider.stage}'
   boardTableName: 'boards-table-${self:provider.stage}'

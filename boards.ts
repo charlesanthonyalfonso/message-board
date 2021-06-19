@@ -1,3 +1,4 @@
+export {};
 const AWS = require("aws-sdk");
 const express = require("express");
 const serverless = require("serverless-http");
